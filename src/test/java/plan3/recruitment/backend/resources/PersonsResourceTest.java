@@ -29,7 +29,8 @@ public class PersonsResourceTest extends ResourceTest {
     @Test
     public void emptyList() {
         final WebResource person = client().resource("/person");
-        final List<Person> emptyList = person.get(new GenericType<List<Person>>() {});
+        final List<Person> emptyList = person.get(new GenericType<List<Person>>() {
+        });
         assertTrue(emptyList.isEmpty());
     }
 
@@ -40,10 +41,11 @@ public class PersonsResourceTest extends ResourceTest {
         final Person markus = Person.valueOf("Markus", "Gustavsson", "markus@plan3.se");
         final Person ian = Person.valueOf("Ian", "Vännman", "ian@plan3.se");
         final Person marten = Person.valueOf("Mårten", "Gustafson", "marten@plan3.se");
-        for(final Person person : Arrays.asList(marten, ian, stefan, markus)) {
+        for (final Person person : Arrays.asList(marten, ian, stefan, markus)) {
             client.type(PersonResource.APPLICATION_JSON_UTF8).put(ClientResponse.class, person);
         }
-        final List<Person> persons = client.get(new GenericType<List<Person>>() {});
+        final List<Person> persons = client.get(new GenericType<List<Person>>() {
+        });
         assertEquals(4, persons.size());
         final Iterator<Person> iterator = persons.iterator();
         assertEquals(marten, iterator.next());

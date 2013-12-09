@@ -36,9 +36,8 @@ public abstract class AbstractJsonRoundTripTest<T> {
         assertTrue(clazz + " bad json,", expected.equals(actual));
         T deserialized;
         try {
-            deserialized = fromJson(fixture, (Class<T>)this.instance.getClass());
-        }
-        catch(final Exception e) {
+            deserialized = fromJson(fixture, (Class<T>) this.instance.getClass());
+        } catch (final Exception e) {
             throw new Exception("Can't deserialize:\n" + asJson(this.instance), e);
         }
         assertSame(clazz + " bad equals,", this.instance, deserialized);

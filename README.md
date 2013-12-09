@@ -61,7 +61,8 @@ And remember, this is meant to be fun :)
 ### Task 2
 * Register an Heroku account, setup a new application and deploy your solution:
     * It must run as a process of type `web`
-    * It must use Java 7
+    * It must use Java 7 
+>> TOOS: use jdk7 features
 * Questions:
     1. How do you feel about shipping and deploying code yourself?
     2. Who do you think should be responsible for code running in production?
