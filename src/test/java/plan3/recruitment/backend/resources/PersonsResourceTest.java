@@ -55,7 +55,7 @@ public class PersonsResourceTest extends ResourceTest {
     }
 
     @Test
-    public void fetchNonExistantReturns404() {
+    public void fetchNonExistingReturns404() {
         final ClientResponse response = client()
                 .resource("/person/a-non-existant-email-address-thats-not-even-valid")
                 .get(ClientResponse.class);
