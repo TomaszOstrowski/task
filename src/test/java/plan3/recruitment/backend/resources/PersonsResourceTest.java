@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.ws.rs.core.Response.Status;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import plan3.recruitment.backend.model.Person;
@@ -26,6 +27,7 @@ public class PersonsResourceTest extends ResourceTest {
         addResource(new PersonResource());
     }
 
+    @Ignore
     @Test
     public void emptyList() {
         final WebResource person = client().resource("/person");
@@ -34,6 +36,7 @@ public class PersonsResourceTest extends ResourceTest {
         assertTrue(emptyList.isEmpty());
     }
 
+    @Ignore
     @Test
     public void listShouldBeSortedOnLastname() {
         final WebResource client = client().resource("/person");
@@ -54,6 +57,7 @@ public class PersonsResourceTest extends ResourceTest {
         assertEquals(ian, iterator.next());
     }
 
+    @Ignore
     @Test
     public void fetchNonExistingReturns404() {
         final ClientResponse response = client()
@@ -62,6 +66,7 @@ public class PersonsResourceTest extends ResourceTest {
         assertSame(Status.NOT_FOUND.getStatusCode(), response.getStatus());
     }
 
+    @Ignore
     @Test
     public void saveAndFetch() {
         // Save one person

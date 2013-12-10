@@ -38,6 +38,7 @@ public class PersonResource {
         return null;
     }
 
+    // Creating an Order, Customer, or Product, str 21 w Restful java
     @PUT
     public Response save(final Person person, @Context final UriInfo uri) {
         this.storage.save(person);

@@ -9,7 +9,7 @@
 
     <groupId>plan3</groupId>
     <artifactId>java-backend-recruitment</artifactId>
-    <version>1</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -102,7 +102,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.2.1</version>
                 <configuration>
-                    <mainClass>${main.class}</mainClass>
+                    <mainClass>plan3.recruitment.backend.PersonDirectoryService</mainClass>
                     <arguments>
                         <argument>server</argument>
                     </arguments>
