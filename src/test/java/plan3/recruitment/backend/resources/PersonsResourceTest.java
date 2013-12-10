@@ -13,18 +13,26 @@ import javax.ws.rs.core.Response.Status;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 import plan3.recruitment.backend.model.Person;
 
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 import com.yammer.dropwizard.testing.ResourceTest;
+import plan3.recruitment.backend.model.PersonStorage;
 
+@RunWith(MockitoJUnitRunner.class)
 public class PersonsResourceTest extends ResourceTest {
+
+    @Mock
+    PersonStorage personStorage;
 
     @Override
     protected void setUpResources() throws Exception {
-        addResource(new PersonResource());
+        addResource(new PersonResource(personStorage));
     }
 
     @Ignore

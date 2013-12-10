@@ -17,6 +17,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <main.class>plan3.recruitment.backend.PersonDirectoryService</main.class>
+        <h2.version>1.3.173</h2.version>
     </properties>
 
     <dependencies>
@@ -24,6 +25,21 @@
             <groupId>com.yammer.dropwizard</groupId>
             <artifactId>dropwizard-core</artifactId>
             <version>${dropwizard.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yammer.dropwizard</groupId>
+            <artifactId>dropwizard-hibernate</artifactId>
+            <version>${dropwizard.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yammer.dropwizard</groupId>
+            <artifactId>dropwizard-migrations</artifactId>
+            <version>${dropwizard.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
         </dependency>
         <!-- TEST DEPs -->
         <dependency>
@@ -102,7 +118,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.2.1</version>
                 <configuration>
-                    <mainClass>plan3.recruitment.backend.PersonDirectoryService</mainClass>
+                    <mainClass>${main.class}</mainClass>
                     <arguments>
                         <argument>server</argument>
                     </arguments>

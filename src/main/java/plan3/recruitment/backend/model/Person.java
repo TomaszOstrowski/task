@@ -6,24 +6,44 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.persistence.*;
 
 import static com.google.common.base.Objects.toStringHelper;
 
+
+// TODO: http://junctionbox.ca/2013/05/10/dropwizard-liquibase-migrations/
+
+@Entity
+@Table(name = "Person")
+@NamedQueries({
+        @NamedQuery(
+                name = "plan3.recruitment.backend.model.Person.findAll",
+                query = "FROM Person p"
+        )
+})
 public class Person {
 
-    @NotEmpty
-    @Length(max = 35)
-    @JsonProperty
-    private final String firstname;
+    // TODO: because of this constructor elements may not be final! Special db schema might be needed.
+    public Person() {
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
     @NotEmpty
     @Length(max = 35)
     @JsonProperty
-    private final String lastname;
+    private String firstname;
+
+    @NotEmpty
+    @Length(max = 35)
+    @JsonProperty
+    private String lastname;
 
     @Email
     @JsonProperty
-    private final String email;
+    private String email;
 
     public Person(@JsonProperty("firstname") final String firstname,
                   @JsonProperty("lastname") final String lastname,
