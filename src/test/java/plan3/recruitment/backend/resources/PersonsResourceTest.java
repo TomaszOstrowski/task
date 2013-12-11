@@ -16,6 +16,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import plan3.recruitment.backend.PersonDirectoryService;
 import plan3.recruitment.backend.model.Person;
 
 import com.sun.jersey.api.client.ClientResponse;
@@ -38,6 +39,11 @@ public class PersonsResourceTest extends ResourceTest {
     @Ignore
     @Test
     public void emptyList() {
+/*        try {
+            PersonDirectoryService.main(new String[]{"server", "person-dir-service-conf.yml"});
+        } catch (Exception e) {
+            System.out.println(e);
+        }*/
         final WebResource person = client().resource("/person");
         final List<Person> emptyList = person.get(new GenericType<List<Person>>() {
         });
