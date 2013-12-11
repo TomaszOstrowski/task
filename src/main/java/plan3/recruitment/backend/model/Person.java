@@ -1,35 +1,30 @@
 package plan3.recruitment.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.ws.rs.core.UriInfo;
+import java.net.URI;
 
 import static com.google.common.base.Objects.toStringHelper;
 
-
-// TODO: http://junctionbox.ca/2013/05/10/dropwizard-liquibase-migrations/
-
 @Entity
 @Table(name = "Person")
-@NamedQueries({
-        @NamedQuery(
-                name = "plan3.recruitment.backend.model.Person.findAll",
-                query = "FROM Person p"
-        )
-})
 public class Person {
 
-    // TODO: because of this constructor elements may not be final! Special db schema might be needed.
     public Person() {
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @NotEmpty
     @Length(max = 35)
@@ -53,9 +48,23 @@ public class Person {
         this.email = email;
     }
 
+    @JsonIgnore
+    public Criterion getEmailEqRestriction() {
+        return Restrictions.eq("email", email);
+    }
+
+    public boolean hasNoIdSet() {
+        return id == null;
+    }
+
+    public URI provideLocation(final UriInfo uri) {
+        return uri.getAbsolutePathBuilder().path(email).build();
+    }
+
     @Override
     public String toString() {
-        return toStringHelper(this)
+        return toStringHelper(this).omitNullValues()
+                .add("id", id)
                 .add("firstname", firstname)
                 .add("lastname", lastname)
                 .add("email", email).toString();

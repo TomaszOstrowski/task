@@ -5,18 +5,17 @@ import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
 import com.yammer.dropwizard.db.DatabaseConfiguration;
 import com.yammer.dropwizard.hibernate.HibernateBundle;
-import com.yammer.dropwizard.migrations.MigrationsBundle;
-import liquibase.database.core.H2Database;
 import plan3.recruitment.backend.model.Person;
-import plan3.recruitment.backend.model.PersonStorage;
-import plan3.recruitment.backend.resources.InMemoryPersonStorage;
+import plan3.recruitment.backend.storage.PersonStorage;
+import plan3.recruitment.backend.storage.InMemoryPersonStorage;
 import plan3.recruitment.backend.resources.PersonResource;
 
-public class PersonDirectoryService extends Service<PersonDirServiceConf> {
+public class PersonDirectoryService extends Service<PersonDirectoryServiceConf> {
 
-    private final HibernateBundle<PersonDirServiceConf> hibernate = new HibernateBundle<PersonDirServiceConf>(Person.class) {
+    private final HibernateBundle<PersonDirectoryServiceConf> hibernate =
+            new HibernateBundle<PersonDirectoryServiceConf>(Person.class) {
         @Override
-        public DatabaseConfiguration getDatabaseConfiguration(PersonDirServiceConf configuration) {
+        public DatabaseConfiguration getDatabaseConfiguration(PersonDirectoryServiceConf configuration) {
             return configuration.getDatabaseConfiguration();
         }
     };
@@ -26,13 +25,13 @@ public class PersonDirectoryService extends Service<PersonDirServiceConf> {
     }
 
     @Override
-    public void initialize(final Bootstrap<PersonDirServiceConf> bootstrap) {
+    public void initialize(final Bootstrap<PersonDirectoryServiceConf> bootstrap) {
         bootstrap.setName("PersonDirectoryService");
         bootstrap.addBundle(hibernate);
     }
 
     @Override
-    public void run(PersonDirServiceConf configuration, Environment environment) throws Exception {
+    public void run(PersonDirectoryServiceConf configuration, Environment environment) throws Exception {
         environment.manage(new H2DatabaseManager(configuration.getDatabaseConfiguration()));
 
         final PersonStorage personStorage = new InMemoryPersonStorage(hibernate.getSessionFactory());

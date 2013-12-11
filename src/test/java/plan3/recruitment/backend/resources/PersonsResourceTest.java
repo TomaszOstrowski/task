@@ -16,14 +16,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import plan3.recruitment.backend.PersonDirectoryService;
 import plan3.recruitment.backend.model.Person;
 
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 import com.yammer.dropwizard.testing.ResourceTest;
-import plan3.recruitment.backend.model.PersonStorage;
+import plan3.recruitment.backend.storage.PersonStorage;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PersonsResourceTest extends ResourceTest {
@@ -59,7 +58,7 @@ public class PersonsResourceTest extends ResourceTest {
         final Person ian = Person.valueOf("Ian", "Vännman", "ian@plan3.se");
         final Person marten = Person.valueOf("Mårten", "Gustafson", "marten@plan3.se");
         for (final Person person : Arrays.asList(marten, ian, stefan, markus)) {
-            client.type(PersonResource.APPLICATION_JSON_UTF8).put(ClientResponse.class, person);
+            client.type(PersonConstants.APPLICATION_JSON_UTF8).put(ClientResponse.class, person);
         }
         final List<Person> persons = client.get(new GenericType<List<Person>>() {
         });
@@ -87,7 +86,7 @@ public class PersonsResourceTest extends ResourceTest {
         final Person person = Person.valueOf("Mårten", "Gustafson", "marten@plan3.se");
         final ClientResponse response = client()
                 .resource("/person")
-                .type(PersonResource.APPLICATION_JSON_UTF8)
+                .type(PersonConstants.APPLICATION_JSON_UTF8)
                 .put(ClientResponse.class, person);
         assertSame(Status.CREATED.getStatusCode(), response.getStatus());
         // Fetch the saved person based on the URI in the response

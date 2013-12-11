@@ -7,7 +7,7 @@ import com.yammer.dropwizard.db.DatabaseConfiguration;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-public class PersonDirServiceConf extends Configuration {
+public class PersonDirectoryServiceConf extends Configuration {
 
     @Valid
     @NotNull
