@@ -69,7 +69,7 @@ public class PersonsResourceTest extends ResourceTest {
         final Person ian = Person.valueOf("Ian", "Vännman", "ian@plan3.se");
         final Person marten = Person.valueOf("Mårten", "Gustafson", "marten@plan3.se");
         for (final Person person : Arrays.asList(marten, ian, stefan, markus)) {
-            client.type(PersonConstants.APPLICATION_JSON_UTF8).put(ClientResponse.class, person);
+            client.type(PersonResourceConstants.APPLICATION_JSON_UTF8).put(ClientResponse.class, person);
         }
         when(personStorage.list()).thenReturn(Lists.newArrayList(marten, markus, stefan, ian));
 
@@ -152,7 +152,7 @@ public class PersonsResourceTest extends ResourceTest {
         final WebResource client = client().resource("/person");
 
         // when
-        client.type(PersonConstants.APPLICATION_JSON_UTF8).put(ClientResponse.class, person);
+        client.type(PersonResourceConstants.APPLICATION_JSON_UTF8).put(ClientResponse.class, person);
 
         // then
         verify(personStorage).save(person);
@@ -165,7 +165,7 @@ public class PersonsResourceTest extends ResourceTest {
         final WebResource client = client().resource("/person");
 
         // when
-        ClientResponse response = client.type(PersonConstants.APPLICATION_JSON_UTF8).put(ClientResponse.class, person);
+        ClientResponse response = client.type(PersonResourceConstants.APPLICATION_JSON_UTF8).put(ClientResponse.class, person);
 
         // then
         assertThat(response.getStatus()).isEqualTo(CREATED.getStatusCode());
@@ -176,7 +176,7 @@ public class PersonsResourceTest extends ResourceTest {
         // given
         final Person person = Person.valueOf("Mårten", "Gustafson", "marten@plan3.se");
         final WebResource client = client().resource("/person");
-        ClientResponse saveResult = client.type(PersonConstants.APPLICATION_JSON_UTF8).put(ClientResponse.class, person);
+        ClientResponse saveResult = client.type(PersonResourceConstants.APPLICATION_JSON_UTF8).put(ClientResponse.class, person);
         when(personStorage.fetch("marten@plan3.se")).thenReturn(Optional.of(person));
 
         // when

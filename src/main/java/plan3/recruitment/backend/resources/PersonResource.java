@@ -13,7 +13,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.Collection;
 
-import static plan3.recruitment.backend.resources.PersonConstants.*;
+import static plan3.recruitment.backend.resources.PersonResourceConstants.*;
 
 @Path("person")
 @Produces(APPLICATION_JSON_UTF8)

@@ -18,9 +18,6 @@ import static com.google.common.base.Objects.toStringHelper;
 @Table(name = "Person")
 public class Person {
 
-    public Person() {
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,6 +35,9 @@ public class Person {
     @Email
     @JsonProperty
     private String email;
+
+    public Person() {
+    }
 
     public Person(@JsonProperty("firstname") final String firstname,
                   @JsonProperty("lastname") final String lastname,
