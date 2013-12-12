@@ -8,9 +8,7 @@ import plan3.recruitment.backend.validators.InputValidator;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 import java.util.Collection;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -51,7 +49,7 @@ public class PersonResource {
 
     @PUT
     @UnitOfWork
-    public Response save(@Valid final Person person, @Context final UriInfo uri) {
+    public Response save(@Valid final Person person) {
         personStorage.save(person);
         return Response.created(person.provideLocation()).build();
     }
