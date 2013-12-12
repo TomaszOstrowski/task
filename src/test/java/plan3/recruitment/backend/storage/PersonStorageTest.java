@@ -129,6 +129,7 @@ public class PersonStorageTest extends StorageTestBase {
         personStorage.save(person3);
 
         String someOtherEmail = "hipsters@codein.java";
+
         // when
         Optional<Person> person = personStorage.fetch(someOtherEmail);
 
