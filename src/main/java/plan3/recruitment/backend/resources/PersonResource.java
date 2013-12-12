@@ -20,8 +20,8 @@ import static plan3.recruitment.backend.resources.PersonConstants.*;
 @Consumes(APPLICATION_JSON_UTF8)
 public class PersonResource {
 
-    private PersonStorage personStorage;
-    private InputValidator inputValidator;
+    private final PersonStorage personStorage;
+    private final InputValidator inputValidator;
 
     public PersonResource(PersonStorage personStorage) {
         this.personStorage = personStorage;

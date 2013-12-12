@@ -13,8 +13,8 @@ import plan3.recruitment.backend.model.Person;
 import java.util.List;
 
 public class InMemoryPersonStorage extends AbstractDAO<Person> implements PersonStorage {
-    private static final Logger LOG = LoggerFactory.getLogger(InMemoryPersonStorage.class);
 
+    private static final Logger LOG = LoggerFactory.getLogger(InMemoryPersonStorage.class);
     private static final boolean DOES_NOT_EXIST = false;
 
     public InMemoryPersonStorage(SessionFactory sessionFactory) {

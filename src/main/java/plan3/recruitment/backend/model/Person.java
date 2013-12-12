@@ -76,9 +76,9 @@ public class Person {
 
         Person person = (Person) other;
 
-        return Objects.equal(this.email, person.email)
-            && Objects.equal(this.firstname, person.firstname)
-            && Objects.equal(this.lastname, person.lastname);
+        return Objects.equal(email, person.email)
+            && Objects.equal(firstname, person.firstname)
+            && Objects.equal(lastname, person.lastname);
     }
 
     @Override
