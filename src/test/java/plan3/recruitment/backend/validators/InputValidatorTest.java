@@ -1,14 +1,11 @@
 package plan3.recruitment.backend.validators;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
-import javax.ws.rs.WebApplicationException;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class InputValidatorTest {
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
 
     private InputValidator inputValidator = new InputValidator();
 
@@ -18,20 +15,21 @@ public class InputValidatorTest {
         String validEmail = "qiuck@brown.fox";
 
         // when
-        inputValidator.validateEmail(validEmail);
+        boolean result = inputValidator.isEmailValid(validEmail);
 
-        // then no exception
+        // then
+        assertTrue(result);
     }
 
     @Test
     public void shouldThrowExceptionForInvalidEmail() {
         // given
         String invalidEmail = "sorry@";
-        exception.expect(WebApplicationException.class);
 
         // when
-        inputValidator.validateEmail(invalidEmail);
+        boolean result = inputValidator.isEmailValid(invalidEmail);
 
-        // then exception
+        // then
+        assertFalse(result);
     }
 }

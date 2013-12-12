@@ -42,12 +42,18 @@ public class PersonResource {
     @UnitOfWork
     @Timed
     public Person fetch(@PathParam(EMAIL_PARAM) final String email) {
-        inputValidator.validateEmail(email);
+        checkIfValid(email);
         Optional<Person> optionalPerson = personStorage.fetch(email);
         if (optionalPerson.isPresent()) {
             return optionalPerson.get();
         }
         throw new WebApplicationException(Response.Status.NOT_FOUND);
+    }
+
+    private void checkIfValid(String email) {
+        if (!inputValidator.isEmailValid(email)) {
+            throw new WebApplicationException(Response.Status.BAD_REQUEST);
+        }
     }
 
     @PUT
