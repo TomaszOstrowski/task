@@ -22,16 +22,17 @@ import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
+import static plan3.recruitment.backend.resources.PersonResource.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PersonsResourceTest extends ResourceTest {
 
     @Mock
-    PersonStorage personStorage;
+    PersonStorage personStorage_mock;
 
     @Override
     protected void setUpResources() throws Exception {
-        addResource(new PersonResource(personStorage));
+        addResource(new PersonResource(personStorage_mock));
     }
 
     @Test
@@ -49,7 +50,7 @@ public class PersonsResourceTest extends ResourceTest {
     @Test
     public void shouldReturnEmptyListIfNoEntitiesStored() {
         // given
-        when(personStorage.list()).thenReturn(Collections.<Person>emptyList());
+        when(personStorage_mock.list()).thenReturn(Collections.<Person>emptyList());
         final WebResource person = client().resource("/person");
 
         // when
@@ -69,18 +70,18 @@ public class PersonsResourceTest extends ResourceTest {
         final Person ian = Person.valueOf("Ian", "Vännman", "ian@plan3.se");
         final Person marten = Person.valueOf("Mårten", "Gustafson", "marten@plan3.se");
         for (final Person person : Arrays.asList(marten, ian, stefan, markus)) {
-            client.type(PersonResourceConstants.APPLICATION_JSON_UTF8).put(ClientResponse.class, person);
+            client.type(APPLICATION_JSON_UTF8).put(ClientResponse.class, person);
         }
-        when(personStorage.list()).thenReturn(Lists.newArrayList(marten, markus, stefan, ian));
+        when(personStorage_mock.list()).thenReturn(Lists.newArrayList(marten, markus, stefan, ian));
 
         // when
         final List<Person> persons = client.get(new GenericType<List<Person>>() { });
 
         // then
-        verify(personStorage).save(stefan);
-        verify(personStorage).save(markus);
-        verify(personStorage).save(ian);
-        verify(personStorage).save(marten);
+        verify(personStorage_mock).save(stefan);
+        verify(personStorage_mock).save(markus);
+        verify(personStorage_mock).save(ian);
+        verify(personStorage_mock).save(marten);
         assertThat(persons).isNotNull().hasSize(4).containsSequence(marten, markus, stefan, ian);
     }
 
@@ -91,7 +92,7 @@ public class PersonsResourceTest extends ResourceTest {
         final String existingEmail = "quick@brown.fox";
         final WebResource person = client().resource("/person/" + existingEmail);
         final Person quickFox = Person.valueOf("Quick", "Fox", existingEmail);
-        when(personStorage.fetch(existingEmail)).thenReturn(Optional.of(quickFox));
+        when(personStorage_mock.fetch(existingEmail)).thenReturn(Optional.of(quickFox));
 
         // when
         final ClientResponse response = person.get(ClientResponse.class);
@@ -111,7 +112,7 @@ public class PersonsResourceTest extends ResourceTest {
 
         // then
         assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.getStatusCode());
-        verifyZeroInteractions(personStorage);
+        verifyZeroInteractions(personStorage_mock);
     }
 
     @Test
@@ -119,14 +120,14 @@ public class PersonsResourceTest extends ResourceTest {
         // given
         final String validEmail = "quick@brown.fox";
         final WebResource client = client().resource("/person/" + validEmail);
-        when(personStorage.fetch(validEmail)).thenReturn(Optional.<Person>absent());
+        when(personStorage_mock.fetch(validEmail)).thenReturn(Optional.<Person>absent());
 
         // when
         final ClientResponse response = client.get(ClientResponse.class);
 
         // then
         assertThat(response.getStatus()).isEqualTo(NOT_FOUND.getStatusCode());
-        verify(personStorage).fetch(validEmail);
+        verify(personStorage_mock).fetch(validEmail);
     }
 
     @Test
@@ -135,7 +136,7 @@ public class PersonsResourceTest extends ResourceTest {
         final String existingEmail = "quick@brown.fox";
         final WebResource person = client().resource("/person/" + existingEmail);
         final Person quickFox = Person.valueOf("Quick", "Fox", existingEmail);
-        when(personStorage.fetch(existingEmail)).thenReturn(Optional.of(quickFox));
+        when(personStorage_mock.fetch(existingEmail)).thenReturn(Optional.of(quickFox));
 
         // when
         final Person result = person.get(Person.class);
@@ -152,10 +153,10 @@ public class PersonsResourceTest extends ResourceTest {
         final WebResource client = client().resource("/person");
 
         // when
-        client.type(PersonResourceConstants.APPLICATION_JSON_UTF8).put(ClientResponse.class, person);
+        client.type(APPLICATION_JSON_UTF8).put(ClientResponse.class, person);
 
         // then
-        verify(personStorage).save(person);
+        verify(personStorage_mock).save(person);
     }
 
     @Test
@@ -165,7 +166,7 @@ public class PersonsResourceTest extends ResourceTest {
         final WebResource client = client().resource("/person");
 
         // when
-        ClientResponse response = client.type(PersonResourceConstants.APPLICATION_JSON_UTF8).put(ClientResponse.class, person);
+        ClientResponse response = client.type(APPLICATION_JSON_UTF8).put(ClientResponse.class, person);
 
         // then
         assertThat(response.getStatus()).isEqualTo(CREATED.getStatusCode());
@@ -176,15 +177,15 @@ public class PersonsResourceTest extends ResourceTest {
         // given
         final Person person = Person.valueOf("Mårten", "Gustafson", "marten@plan3.se");
         final WebResource client = client().resource("/person");
-        ClientResponse saveResult = client.type(PersonResourceConstants.APPLICATION_JSON_UTF8).put(ClientResponse.class, person);
-        when(personStorage.fetch("marten@plan3.se")).thenReturn(Optional.of(person));
+        ClientResponse saveResult = client.type(APPLICATION_JSON_UTF8).put(ClientResponse.class, person);
+        when(personStorage_mock.fetch("marten@plan3.se")).thenReturn(Optional.of(person));
 
         // when
         final Person fetched = client().resource(saveResult.getLocation()).get(Person.class);
 
         // then
-        verify(personStorage).save(person);
-        verify(personStorage).fetch("marten@plan3.se");
+        verify(personStorage_mock).save(person);
+        verify(personStorage_mock).fetch("marten@plan3.se");
         assertEquals(person, fetched);
     }
 }

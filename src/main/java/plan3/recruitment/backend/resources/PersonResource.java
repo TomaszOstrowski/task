@@ -20,8 +20,8 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 @Consumes(PersonResource.APPLICATION_JSON_UTF8)
 public class PersonResource {
     static final String APPLICATION_JSON_UTF8 = APPLICATION_JSON + "; charset=utf-8";
-    private static final String EMAIL_PARAM = "email";
-    private static final String EMAIL_PATH_PARAM = '{' + EMAIL_PARAM + '}';
+    static final String EMAIL_PARAM = "email";
+    static final String EMAIL_PATH_PARAM = '{' + EMAIL_PARAM + '}';
 
     private final PersonStorage personStorage;
     private final InputValidator inputValidator;
