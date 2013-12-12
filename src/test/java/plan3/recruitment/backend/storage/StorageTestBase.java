@@ -62,7 +62,9 @@ public abstract class StorageTestBase {
                 .setProperty("hibernate.connection.username", USER)
                 .setProperty("hibernate.connection.password", PASSWORD)
                 .setProperty("hibernate.current_session_context_class", "thread");
-        ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().applySettings(config.getProperties()).buildServiceRegistry();
+
+        ServiceRegistry serviceRegistry = new ServiceRegistryBuilder()
+                .applySettings(config.getProperties()).buildServiceRegistry();
 
         return config.buildSessionFactory(serviceRegistry);
     }
