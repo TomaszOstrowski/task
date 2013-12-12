@@ -16,6 +16,7 @@ public class InMemoryPersonStorage extends AbstractDAO<Person> implements Person
 
     private static final Logger LOG = LoggerFactory.getLogger(InMemoryPersonStorage.class);
     private static final boolean DOES_NOT_EXIST = false;
+    private static final boolean REMOVED = true;
 
     public InMemoryPersonStorage(SessionFactory sessionFactory) {
         super(sessionFactory);
@@ -63,6 +64,7 @@ public class InMemoryPersonStorage extends AbstractDAO<Person> implements Person
         if (localPerson.isPresent()) {
             currentSession().delete(localPerson.get());
             currentSession().flush();
+            return REMOVED;
         }
         return DOES_NOT_EXIST;
     }
