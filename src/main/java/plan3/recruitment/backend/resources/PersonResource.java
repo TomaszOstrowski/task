@@ -2,9 +2,9 @@ package plan3.recruitment.backend.resources;
 
 import com.google.common.base.Optional;
 import com.yammer.dropwizard.hibernate.UnitOfWork;
-import org.hibernate.validator.constraints.Email;
 import plan3.recruitment.backend.model.Person;
 import plan3.recruitment.backend.storage.PersonStorage;
+import plan3.recruitment.backend.validators.InputValidator;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
@@ -21,9 +21,11 @@ import static plan3.recruitment.backend.resources.PersonConstants.*;
 public class PersonResource {
 
     private PersonStorage personStorage;
+    private InputValidator inputValidator;
 
     public PersonResource(PersonStorage personStorage) {
         this.personStorage = personStorage;
+        this.inputValidator = new InputValidator();
     }
 
     @GET
@@ -35,7 +37,8 @@ public class PersonResource {
     @GET
     @Path(EMAIL_PATH_PARAM)
     @UnitOfWork
-    public Person fetch(@PathParam(EMAIL_PARAM) @Email @Valid final String email) {
+    public Person fetch(@PathParam(EMAIL_PARAM) final String email) {
+        inputValidator.validateEmail(email);
         Optional<Person> optionalPerson = personStorage.fetch(email);
         if (optionalPerson.isPresent()) {
             return optionalPerson.get();
@@ -47,6 +50,6 @@ public class PersonResource {
     @UnitOfWork
     public Response save(@Valid final Person person, @Context final UriInfo uri) {
         personStorage.save(person);
-        return Response.created(person.provideLocation(uri)).build();
+        return Response.created(person.provideLocation()).build();
     }
 }

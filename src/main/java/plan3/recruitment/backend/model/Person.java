@@ -7,10 +7,9 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
-import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 
 import static com.google.common.base.Objects.toStringHelper;
@@ -26,12 +25,12 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty
+    @NotBlank
     @Length(max = 35)
     @JsonProperty
     private String firstname;
 
-    @NotEmpty
+    @NotBlank
     @Length(max = 35)
     @JsonProperty
     private String lastname;
@@ -57,8 +56,8 @@ public class Person {
         return id == null;
     }
 
-    public URI provideLocation(final UriInfo uri) {
-        return uri.getAbsolutePathBuilder().path(email).build();
+    public URI provideLocation() {
+        return URI.create(email);
     }
 
     @Override
