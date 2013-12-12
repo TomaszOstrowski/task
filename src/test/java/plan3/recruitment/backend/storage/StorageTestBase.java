@@ -22,6 +22,7 @@ public abstract class StorageTestBase {
     private static final String URL = "jdbc:h2:toos";
     private static final String H2_DRIVER = "org.h2.Driver";
     private static final String H2_DIALECT = "org.hibernate.dialect.H2Dialect";
+    private static final String THREAD = "thread";
 
     private static H2DatabaseManager databaseManager;
     protected static SessionFactory sessionFactory;
@@ -61,7 +62,7 @@ public abstract class StorageTestBase {
                 .setProperty("hibernate.connection.url", URL)
                 .setProperty("hibernate.connection.username", USER)
                 .setProperty("hibernate.connection.password", PASSWORD)
-                .setProperty("hibernate.current_session_context_class", "thread");
+                .setProperty("hibernate.current_session_context_class", THREAD);
 
         ServiceRegistry serviceRegistry = new ServiceRegistryBuilder()
                 .applySettings(config.getProperties()).buildServiceRegistry();
