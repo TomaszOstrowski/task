@@ -84,7 +84,7 @@ public class PersonStorageTest extends StorageTestBase {
     }
 
     @Test
-    public void shouldUpdateEntityIfEmailMatch() {
+    public void shouldReplaceEntityIfEmailMatch() {
         // given
         String personEmail = "drLecter@gmail.com";
         Person personL = Person.valueOf("Hannibal", "Lecter", personEmail);
@@ -167,7 +167,7 @@ public class PersonStorageTest extends StorageTestBase {
     }
 
     @Test
-    public void shouldRemoveNotRemoveEntityIfItsNotInDB() {
+    public void shouldNotRemoveEntityIfItsNotInDB() {
         Person person1 = Person.valueOf("Hannibal", "Lecter", "drLecter@gmail.com");
         Person person2 = Person.valueOf("Tomasz", "Ostrowski", "toos@ymail.com");
         personStorage.save(person1);
