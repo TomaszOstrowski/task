@@ -2,6 +2,7 @@ package plan3.recruitment.backend.resources;
 
 import com.google.common.base.Optional;
 import com.yammer.dropwizard.hibernate.UnitOfWork;
+import com.yammer.metrics.annotation.Timed;
 import plan3.recruitment.backend.model.Person;
 import plan3.recruitment.backend.storage.PersonStorage;
 import plan3.recruitment.backend.validators.InputValidator;
@@ -31,6 +32,7 @@ public class PersonResource {
 
     @GET
     @UnitOfWork
+    @Timed
     public Collection<Person> list() {
         return personStorage.list();
     }
@@ -38,6 +40,7 @@ public class PersonResource {
     @GET
     @Path(EMAIL_PATH_PARAM)
     @UnitOfWork
+    @Timed
     public Person fetch(@PathParam(EMAIL_PARAM) final String email) {
         inputValidator.validateEmail(email);
         Optional<Person> optionalPerson = personStorage.fetch(email);
@@ -49,6 +52,7 @@ public class PersonResource {
 
     @PUT
     @UnitOfWork
+    @Timed
     public Response save(@Valid final Person person) {
         personStorage.save(person);
         return Response.created(person.provideLocation()).build();

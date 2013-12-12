@@ -5,6 +5,7 @@ import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
 import com.yammer.dropwizard.db.DatabaseConfiguration;
 import com.yammer.dropwizard.hibernate.HibernateBundle;
+import plan3.recruitment.backend.health.PersonResourceHealthCheck;
 import plan3.recruitment.backend.model.Person;
 import plan3.recruitment.backend.storage.PersonStorage;
 import plan3.recruitment.backend.storage.InMemoryPersonStorage;
@@ -35,6 +36,9 @@ public class PersonDirectoryService extends Service<PersonDirectoryServiceConf> 
         environment.manage(new H2DatabaseManager(configuration.getDatabaseConfiguration()));
 
         final PersonStorage personStorage = new InMemoryPersonStorage(hibernate.getSessionFactory());
-        environment.addResource(new PersonResource(personStorage));
+        PersonResource personResource = new PersonResource(personStorage);
+
+        environment.addResource(personResource);
+        environment.addHealthCheck(new PersonResourceHealthCheck(personResource));
     }
 }
