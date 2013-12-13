@@ -29,7 +29,7 @@ public abstract class AbstractJsonRoundTripTest<T> {
 
         final JsonNode expected = mapper.readTree(fixture);
         final JsonNode actual = mapper.readTree(asJson(instance));
-        assertEquals(clazz + " has unexpected json representation after conversion", expected, actual);
+        assertEquals(clazz + " has unexpected json representation after conversion\n", expected, actual);
 
         T deserialized = getDeserialized(fixture);
 

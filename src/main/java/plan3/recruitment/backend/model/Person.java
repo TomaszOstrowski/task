@@ -1,18 +1,14 @@
 package plan3.recruitment.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Objects;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import java.net.URI;
-
-import static com.google.common.base.Objects.toStringHelper;
 
 @Entity
 @Table(name = "Person")
@@ -22,34 +18,22 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Length(max = 35)
+    @Valid
+    @JsonUnwrapped
     @JsonProperty
-    private String firstname;
-
-    @NotBlank
-    @Length(max = 35)
-    @JsonProperty
-    private String lastname;
-
-    @Email
-    @JsonProperty
-    private String email;
+    private PersonDetails personDetails;
 
     public Person() {
     }
 
-    public Person(@JsonProperty("firstname") final String firstname,
-                  @JsonProperty("lastname") final String lastname,
-                  @JsonProperty("email") final String email) {
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.email = email;
+    @JsonCreator
+    public Person(@JsonProperty("personDetails") PersonDetails personDetails) {
+        this.personDetails = personDetails;
     }
 
     @JsonIgnore
     public Criterion getEmailEqRestriction() {
-        return Restrictions.eq("email", email);
+        return personDetails.getEmailEqRestriction();
     }
 
     public boolean hasNoIdSet() {
@@ -57,37 +41,40 @@ public class Person {
     }
 
     public URI provideLocation() {
-        return URI.create(email);
+        return personDetails.provideLocation();
     }
 
     @Override
-    public String toString() {
-        return toStringHelper(this).omitNullValues()
-                .add("id", id)
-                .add("firstname", firstname)
-                .add("lastname", lastname)
-                .add("email", email).toString();
-    }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Person)) return false;
 
-    @Override
-    public boolean equals(Object other) {
-        if (this == other) return true;
-        if (other == null || getClass() != other.getClass()) return false;
+        Person person = (Person) o;
 
-        Person person = (Person) other;
+        if (id != null ? !id.equals(person.id) : person.id != null) return false;
+        if (personDetails != null ? !personDetails.equals(person.personDetails) : person.personDetails != null)
+            return false;
 
-        return Objects.equal(email, person.email)
-            && Objects.equal(firstname, person.firstname)
-            && Objects.equal(lastname, person.lastname);
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(firstname, lastname, email);
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (personDetails != null ? personDetails.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", personDetails=" + personDetails +
+                '}';
     }
 
     // DO NOT REMOVE THIS METHOD. But feel free to adjust to suit your needs.
     public static Person valueOf(final String firstname, final String lastname, final String email) {
-        return new Person(firstname, lastname, email);
+        return new Person(new PersonDetails(new FullName(firstname, lastname), new Contact(email)));
     }
 }
