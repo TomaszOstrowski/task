@@ -5,17 +5,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class FullName {
 
     @NotBlank
     @Length(max = 35)
     @JsonProperty
-    private final String firstname;
+    private String firstname;
 
     @NotBlank
     @Length(max = 35)
     @JsonProperty
-    private final String lastname;
+    private String lastname;
+
+    private FullName() {
+    }
 
     @JsonCreator
     public FullName(@JsonProperty("firstname") String firstname,
@@ -23,6 +29,7 @@ public class FullName {
         this.firstname = firstname;
         this.lastname = lastname;
     }
+
 
     @Override
     public boolean equals(Object o) {

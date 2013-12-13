@@ -4,22 +4,27 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import org.hibernate.criterion.Criterion;
 
+import javax.persistence.Embeddable;
+import org.hibernate.Query;
 import javax.validation.Valid;
 import java.net.URI;
 
+@Embeddable
 public class PersonDetails {
 
     @Valid
     @JsonUnwrapped
     @JsonProperty
-    private final FullName fullName;
+    private FullName fullName;
 
     @Valid
     @JsonUnwrapped
     @JsonProperty
-    private final Contact contact;
+    private Contact contact;
+
+    private PersonDetails() {
+    }
 
     @JsonCreator
     public PersonDetails(@JsonProperty("fullName") FullName fullName,
@@ -29,13 +34,14 @@ public class PersonDetails {
     }
 
     @JsonIgnore
-    public Criterion getEmailEqRestriction() {
-        return contact.getEmailEqRestriction();
+    public Query setEmailAsQueryParam(Query query) {
+        return contact.setEmailAsQueryParam(query);
     }
 
     public URI provideLocation() {
         return contact.provideLocation();
     }
+
 
     @Override
     public boolean equals(Object o) {

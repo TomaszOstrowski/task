@@ -1,16 +1,18 @@
 package plan3.recruitment.backend.storage;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import com.yammer.dropwizard.hibernate.AbstractDAO;
-import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import plan3.recruitment.backend.model.Person;
 
 import java.util.List;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Arrays.asList;
 
 public class InMemoryPersonStorage extends AbstractDAO<Person> implements PersonStorage {
 
@@ -24,14 +26,33 @@ public class InMemoryPersonStorage extends AbstractDAO<Person> implements Person
 
     @Override
     public List<Person> list() {
-        return list(criteria().addOrder(Order.asc("lastname")));
+        Query query = namedQuery("Person.listAllByLastnameInAscOrder");
+        List<Person> persons = list(query);
+        logEntitiesFound(persons);
+
+        return persons;
+    }
+
+    private void logEntitiesFound(Iterable<Person> persons) {
+        if (persons != null && LOG.isDebugEnabled()) {
+            LOG.debug("Person entities found: " + Joiner.on("|").join(persons));
+        }
     }
 
     @Override
     public Optional<Person> fetch(final String email) {
-        Criteria byEmail = criteria().add(Restrictions.eq("email", email));
-        Person person = uniqueResult(byEmail);
+        Query query = namedQuery("Person.getByEmail");
+        query.setParameter("email", email);
+        Person person = uniqueResult(query);
+        logEntityFound(person);
+
         return Optional.fromNullable(person);
+    }
+
+    private void logEntityFound(Person person) {
+        if (person != null && LOG.isDebugEnabled()) {
+            LOG.debug("Person entities found: " + person);
+        }
     }
 
     @Override
@@ -41,12 +62,13 @@ public class InMemoryPersonStorage extends AbstractDAO<Person> implements Person
             remove(personOptional.get());
         }
         persist(person);
+        logEntitySaved(person);
     }
 
     private Optional<Person> findPerson(final Person person) {
-        LOG.debug("Looking for following person in DB: " + person);
-        Criteria byEmail = criteria().add(person.getEmailEqRestriction());
-        Optional<Person> personOptional = Optional.fromNullable(uniqueResult(byEmail));
+        Query query = namedQuery("Person.getByEmail");
+        person.setEmailAsQueryParam(query);
+        Optional<Person> personOptional = Optional.fromNullable(uniqueResult(query));
 
         if (personOptional.isPresent()) {
             LOG.debug("Person was found in DB: " + personOptional.get());
@@ -55,9 +77,15 @@ public class InMemoryPersonStorage extends AbstractDAO<Person> implements Person
         return personOptional;
     }
 
+    private void logEntitySaved(Person person) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Entities saved: " + person);
+        }
+    }
+
     @Override
     public boolean remove(final Person person) {
-        Optional<Person> localPerson = Optional.of(person);
+        Optional<Person> localPerson = Optional.of(checkNotNull(person));
         if (person.hasNoIdSet()) {
             localPerson = findPerson(person);
         }
