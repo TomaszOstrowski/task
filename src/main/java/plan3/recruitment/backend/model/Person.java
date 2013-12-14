@@ -34,7 +34,7 @@ public class Person {
     @Valid
     @JsonUnwrapped
     @JsonProperty
-    private PersonDetails personDetails;
+    private final PersonDetails personDetails;
 
     @JsonCreator
     public Person(@JsonProperty("personDetails") PersonDetails personDetails) {
