@@ -11,7 +11,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(JUnitParamsRunner.class)
 public class InputValidatorTest {
 
-    private InputValidator inputValidator = new InputValidator();
+    private final InputValidator inputValidator = new InputValidator();
 
     @Test
     public void shouldReturnTrueForValidEmail() {

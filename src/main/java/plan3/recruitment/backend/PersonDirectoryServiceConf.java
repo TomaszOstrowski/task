@@ -12,7 +12,7 @@ public class PersonDirectoryServiceConf extends Configuration {
     @Valid
     @NotNull
     @JsonProperty("database")
-    private DatabaseConfiguration database = new DatabaseConfiguration();
+    private final DatabaseConfiguration database = new DatabaseConfiguration();
 
     public DatabaseConfiguration getDatabaseConfiguration() {
         return database;
