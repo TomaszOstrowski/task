@@ -1,7 +1,6 @@
 package plan3.recruitment.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.Query;
 import org.hibernate.validator.constraints.Email;
@@ -24,7 +23,6 @@ public class Contact {
         this.email = email;
     }
 
-    @JsonIgnore
     public Query setEmailAsQueryParam(Query query) {
         return query.setParameter("email", email);
     }

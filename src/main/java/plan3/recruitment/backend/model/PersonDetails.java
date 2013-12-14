@@ -1,12 +1,11 @@
 package plan3.recruitment.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import org.hibernate.Query;
 
 import javax.persistence.Embeddable;
-import org.hibernate.Query;
 import javax.validation.Valid;
 import java.net.URI;
 
@@ -33,7 +32,6 @@ public class PersonDetails {
         this.contact = contact;
     }
 
-    @JsonIgnore
     public Query setEmailAsQueryParam(Query query) {
         return contact.setEmailAsQueryParam(query);
     }

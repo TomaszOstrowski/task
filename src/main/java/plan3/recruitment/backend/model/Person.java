@@ -1,18 +1,11 @@
 package plan3.recruitment.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import org.hibernate.Query;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.Valid;
 import java.net.URI;
 
@@ -41,7 +34,6 @@ public class Person {
         this.personDetails = personDetails;
     }
 
-    @JsonIgnore
     public Query setEmailAsQueryParam(Query query) {
         return personDetails.setEmailAsQueryParam(query);
     }
