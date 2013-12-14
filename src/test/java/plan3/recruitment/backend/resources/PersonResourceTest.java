@@ -6,7 +6,9 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 import com.yammer.dropwizard.testing.ResourceTest;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -25,7 +27,10 @@ import static org.mockito.Mockito.*;
 import static plan3.recruitment.backend.resources.PersonResource.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PersonsResourceTest extends ResourceTest {
+public class PersonResourceTest extends ResourceTest {
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     @Mock
     PersonStorage personStorage_mock;
@@ -33,6 +38,17 @@ public class PersonsResourceTest extends ResourceTest {
     @Override
     protected void setUpResources() throws Exception {
         addResource(new PersonResource(personStorage_mock));
+    }
+
+    @Test
+    public void shouldNotInstantiateClassIfNullPassedDuringConstruction() {
+        // given
+        exception.expect(NullPointerException.class);
+
+        // when
+        new PersonResource(null);
+
+        // then Exception is thrown
     }
 
     @Test

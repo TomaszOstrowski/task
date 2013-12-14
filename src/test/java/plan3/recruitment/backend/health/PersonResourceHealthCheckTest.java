@@ -2,7 +2,9 @@ package plan3.recruitment.backend.health;
 
 import com.yammer.metrics.core.HealthCheck;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -19,6 +21,9 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class PersonResourceHealthCheckTest {
 
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+
     @Mock
     private PersonResource personResource_mock;
 
@@ -27,6 +32,17 @@ public class PersonResourceHealthCheckTest {
     @Before
     public void setUp() {
         healthCheck = new PersonResourceHealthCheck(personResource_mock);
+    }
+
+    @Test
+    public void shouldNotInstantiateClassIfNullPassedDuringConstruction() {
+        // given
+        exception.expect(NullPointerException.class);
+
+        // when
+        new PersonResourceHealthCheck(null);
+
+        // then Exception is thrown
     }
 
     @Test

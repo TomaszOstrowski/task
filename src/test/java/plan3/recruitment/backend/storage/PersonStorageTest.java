@@ -2,7 +2,9 @@ package plan3.recruitment.backend.storage;
 
 import com.google.common.base.Optional;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import plan3.recruitment.backend.model.Person;
 
 import java.util.List;
@@ -13,11 +15,25 @@ import static org.junit.Assert.assertTrue;
 
 public class PersonStorageTest extends StorageTestBase {
 
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+
     private PersonStorage personStorage;
 
     @Before
     public void setUp() throws Exception {
         personStorage = new InMemoryPersonStorage(sessionFactory);
+    }
+
+    @Test
+    public void shouldNotInstantiateClassIfNullPassedDuringConstruction() {
+        // given
+        exception.expect(NullPointerException.class);
+
+        // when
+        new InMemoryPersonStorage(null);
+
+        // then Exception is thrown
     }
 
     @Test
