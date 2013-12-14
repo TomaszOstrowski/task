@@ -14,7 +14,7 @@ public class PersonResourceHealthCheck extends HealthCheck {
 
     public PersonResourceHealthCheck(PersonResource personResource) {
         super("PersonResource email validation");
-        this.personResource = checkNotNull(personResource, "personResource must not be null.");
+        this.personResource = checkNotNull(personResource);
     }
 
     @Override

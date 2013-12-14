@@ -11,7 +11,10 @@ import plan3.recruitment.backend.model.Person;
 
 import java.util.List;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.lang.String.format;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 public class InMemoryPersonStorage extends AbstractDAO<Person> implements PersonStorage {
 
@@ -33,33 +36,38 @@ public class InMemoryPersonStorage extends AbstractDAO<Person> implements Person
     }
 
     private void logEntitiesFound(Iterable<Person> persons) {
-        if (persons != null && LOG.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Person entities found: " + Joiner.on("|").join(persons));
         }
     }
 
     @Override
     public Optional<Person> fetch(final String email) {
+        checkArgument(isNotBlank(email));
+
         Query query = namedQuery("Person.getByEmail");
         query.setParameter("email", email);
-        Person person = uniqueResult(query);
+        Optional<Person> personOptional = Optional.fromNullable(uniqueResult(query));
 
-        logEntityFound(person);
-        return Optional.fromNullable(person);
+        logEntityFound(personOptional, email);
+        return personOptional;
     }
 
-    private void logEntityFound(Person person) {
-        if (person != null && LOG.isDebugEnabled()) {
-            LOG.debug("Person entities found: " + person);
+    private void logEntityFound(Optional<Person> person, String email) {
+        if (person.isPresent() && LOG.isDebugEnabled()) {
+            LOG.debug(format("For email %s following Person entity found: %s", email, person.get()));
         }
     }
 
     @Override
     public void save(final Person person) {
+        checkNotNull(person);
+
         Optional<Person> personOptional = findPerson(person);
         if (personOptional.isPresent()) {
             remove(personOptional.get());
         }
+
         persist(person);
         logEntitySaved(person);
     }
@@ -74,20 +82,22 @@ public class InMemoryPersonStorage extends AbstractDAO<Person> implements Person
     }
 
     private void logPersonPresent(Optional<Person> personOptional) {
-        if (personOptional.isPresent()) {
+        if (personOptional.isPresent() && LOG.isDebugEnabled()) {
             LOG.debug("Person was found in DB: " + personOptional.get());
         }
     }
 
     private void logEntitySaved(Person person) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Entities saved: " + person);
+            LOG.debug("Entity saved: " + person);
         }
     }
 
     @Override
     public boolean remove(final Person person) {
-        Optional<Person> localPerson = Optional.of(checkNotNull(person));
+        checkNotNull(person);
+
+        Optional<Person> localPerson = Optional.of(person);
         if (person.hasNoIdSet()) {
             localPerson = findPerson(person);
         }
