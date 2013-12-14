@@ -12,7 +12,6 @@ import plan3.recruitment.backend.model.Person;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static java.util.Arrays.asList;
 
 public class InMemoryPersonStorage extends AbstractDAO<Person> implements PersonStorage {
 
@@ -28,8 +27,8 @@ public class InMemoryPersonStorage extends AbstractDAO<Person> implements Person
     public List<Person> list() {
         Query query = namedQuery("Person.listAllByLastnameInAscOrder");
         List<Person> persons = list(query);
-        logEntitiesFound(persons);
 
+        logEntitiesFound(persons);
         return persons;
     }
 
@@ -44,8 +43,8 @@ public class InMemoryPersonStorage extends AbstractDAO<Person> implements Person
         Query query = namedQuery("Person.getByEmail");
         query.setParameter("email", email);
         Person person = uniqueResult(query);
-        logEntityFound(person);
 
+        logEntityFound(person);
         return Optional.fromNullable(person);
     }
 
@@ -70,11 +69,14 @@ public class InMemoryPersonStorage extends AbstractDAO<Person> implements Person
         person.setEmailAsQueryParam(query);
         Optional<Person> personOptional = Optional.fromNullable(uniqueResult(query));
 
+        logPersonPresent(personOptional);
+        return personOptional;
+    }
+
+    private void logPersonPresent(Optional<Person> personOptional) {
         if (personOptional.isPresent()) {
             LOG.debug("Person was found in DB: " + personOptional.get());
         }
-
-        return personOptional;
     }
 
     private void logEntitySaved(Person person) {
