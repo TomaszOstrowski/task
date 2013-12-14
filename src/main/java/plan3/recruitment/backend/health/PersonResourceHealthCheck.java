@@ -18,7 +18,6 @@ public class PersonResourceHealthCheck extends HealthCheck {
     }
 
     @Override
-
     protected Result check() throws Exception {
         String invalidEmail = "health-check-please-ignore-me@";
 
