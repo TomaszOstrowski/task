@@ -57,18 +57,14 @@ public class Person {
 
         Person person = (Person) o;
 
-        if (id != null ? !id.equals(person.id) : person.id != null) return false;
-        if (personDetails != null ? !personDetails.equals(person.personDetails) : person.personDetails != null)
-            return false;
+        if (!personDetails.equals(person.personDetails)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (personDetails != null ? personDetails.hashCode() : 0);
-        return result;
+        return personDetails.hashCode();
     }
 
     @Override
