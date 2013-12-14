@@ -74,7 +74,7 @@ public class InMemoryPersonStorage extends AbstractDAO<Person> implements Person
 
     private Optional<Person> findPerson(final Person person) {
         Query query = namedQuery("Person.getByEmail");
-        person.setEmailAsQueryParam(query);
+        person.provideEmailForQuery(query);
         Optional<Person> personOptional = Optional.fromNullable(uniqueResult(query));
 
         logPersonPresent(personOptional);

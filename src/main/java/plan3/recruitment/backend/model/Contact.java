@@ -23,7 +23,7 @@ public class Contact {
         this.email = email;
     }
 
-    public Query setEmailAsQueryParam(Query query) {
+    public Query provideEmailForQuery(Query query) {
         return query.setParameter("email", email);
     }
 

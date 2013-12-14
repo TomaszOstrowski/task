@@ -32,8 +32,8 @@ public class PersonDetails {
         this.contact = contact;
     }
 
-    public Query setEmailAsQueryParam(Query query) {
-        return contact.setEmailAsQueryParam(query);
+    public Query provideEmailForQuery(Query query) {
+        return contact.provideEmailForQuery(query);
     }
 
     public URI provideLocation() {

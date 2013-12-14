@@ -37,8 +37,8 @@ public class Person {
     private Person() {
     }
 
-    public Query setEmailAsQueryParam(Query query) {
-        return personDetails.setEmailAsQueryParam(query);
+    public Query provideEmailForQuery(Query query) {
+        return personDetails.provideEmailForQuery(query);
     }
 
     public boolean hasNoIdSet() {
