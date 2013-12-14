@@ -27,11 +27,14 @@ public class Person {
     @Valid
     @JsonUnwrapped
     @JsonProperty
-    private final PersonDetails personDetails;
+    private PersonDetails personDetails;
 
     @JsonCreator
     public Person(@JsonProperty("personDetails") PersonDetails personDetails) {
         this.personDetails = personDetails;
+    }
+
+    private Person() {
     }
 
     public Query setEmailAsQueryParam(Query query) {
