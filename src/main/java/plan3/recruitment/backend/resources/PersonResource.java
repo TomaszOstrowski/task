@@ -12,6 +12,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.Collection;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @Path("person")
@@ -26,7 +27,7 @@ public class PersonResource {
     private final InputValidator inputValidator;
 
     public PersonResource(PersonStorage personStorage) {
-        this.personStorage = personStorage;
+        this.personStorage = checkNotNull(personStorage);
         this.inputValidator = new InputValidator();
     }
 

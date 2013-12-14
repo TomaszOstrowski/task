@@ -8,13 +8,15 @@ import org.h2.tools.Server;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public class H2DatabaseManager implements Managed {
 
     private final DatabaseConfiguration databaseConfiguration;
     private Server server;
 
     public H2DatabaseManager(DatabaseConfiguration databaseConfiguration) {
-        this.databaseConfiguration = databaseConfiguration;
+        this.databaseConfiguration = checkNotNull(databaseConfiguration);
     }
 
     @Override

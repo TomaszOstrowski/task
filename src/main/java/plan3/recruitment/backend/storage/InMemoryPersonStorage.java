@@ -23,7 +23,7 @@ public class InMemoryPersonStorage extends AbstractDAO<Person> implements Person
     private static final boolean REMOVED = true;
 
     public InMemoryPersonStorage(SessionFactory sessionFactory) {
-        super(sessionFactory);
+        super(checkNotNull(sessionFactory));
     }
 
     @Override
