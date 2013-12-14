@@ -21,6 +21,7 @@
         <fest.version>1.4</fest.version>
         <fasterxml.jackson.version>2.3.0</fasterxml.jackson.version>
         <commons-lang.version>2.6</commons-lang.version>
+        <JUnitParams.version>1.0.2</JUnitParams.version>
     </properties>
 
     <dependencies>
@@ -76,6 +77,12 @@
             <groupId>org.easytesting</groupId>
             <artifactId>fest-assert</artifactId>
             <version>${fest.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>pl.pragmatists</groupId>
+            <artifactId>JUnitParams</artifactId>
+            <version>${JUnitParams.version}</version>
             <scope>test</scope>
         </dependency>
 
