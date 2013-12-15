@@ -159,7 +159,7 @@
                     <mainClass>${main.class}</mainClass>
                     <arguments>
                         <argument>server</argument>
-                        <argument>person-dir-service-conf-LOCAL.yml</argument>
+                        <argument>person-dir-service-conf.yml</argument>
                     </arguments>
                 </configuration>
             </plugin>
