@@ -32,16 +32,16 @@ public class PersonResource {
     }
 
     @GET
-    @UnitOfWork
     @Timed
+    @UnitOfWork(readOnly=true)
     public Collection<Person> list() {
         return personStorage.list();
     }
 
     @GET
     @Path(EMAIL_PATH_PARAM)
-    @UnitOfWork
     @Timed
+    @UnitOfWork(readOnly=true)
     public Person fetch(@PathParam(EMAIL_PARAM) final String email) {
         checkIfValid(email);
         Optional<Person> optionalPerson = personStorage.fetch(email);
