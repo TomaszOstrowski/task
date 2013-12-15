@@ -10,7 +10,6 @@ import javax.validation.Valid;
 import java.net.URI;
 
 @Entity
-@Table(name = "Person")
 @NamedQueries({
         @NamedQuery(name="Person.listAllByLastnameInAscOrder",
                     query="from Person p order by p.personDetails.fullName.lastname"),
